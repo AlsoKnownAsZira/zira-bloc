@@ -1,24 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:bloc/bloc.dart';
-
-class CounterCubit extends Cubit<int> {
-  int initialData;
-  CounterCubit({this.initialData = 0})
-      : super(
-            initialData); //initialdata is optional, we can use super(0) as well, but this approach is more readable
-
-  void incrementData() {
-    emit(state + 1); //no need to use yield
-  }
-
-  void decrementData() {
-    emit(state - 1);
-  }
-}
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:zira_bloc/bloc/counter.dart';
 
 class HomePage extends StatelessWidget {
-  CounterCubit myCounter =
-      CounterCubit(); // initialize the counter using the CounterCubit class
+  final Counter myCounter = Counter(
+      initialData: 0); // initialize the counter using the Counter class
   HomePage({super.key});
 
   @override
@@ -34,20 +20,41 @@ class HomePage extends StatelessWidget {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            StreamBuilder(
-              stream: myCounter.stream,
-              initialData: myCounter.initialData,
-              builder: (context, snapshot) {
-                return Center(
-                  child: Text(
-                    "${snapshot.data}", //display the data from the stream
-                    style: const TextStyle(
-                      fontSize: 50,
-                    ),
+            BlocBuilder<Counter,int>(
+
+              bloc: myCounter,// which bloc to use
+              // a function to make conditional building, the values still change but the UI does not rebuild
+              buildWhen: (previous, current) {
+                if (current % 2 == 0) {
+                  return true;
+                } else {
+                  return false;
+                }
+              },
+              builder: (context, state) {
+                return Text(
+                  "$state", // display the data from the stream
+                  style: const TextStyle(
+                    fontSize: 50,
                   ),
                 );
               },
             ),
+            // StreamBuilder(
+            //   stream: myCounter.stream,
+            //   initialData: myCounter.initialData,
+            //   builder: (context, snapshot) {
+            //     return Center(
+            //       child: Text(
+            //         "${snapshot.data}", //display the data from the stream
+            //         style: const TextStyle(
+            //           fontSize: 50,
+            //         ),
+            //       ),
+            //     );
+            //   },
+            // ),
+
             const SizedBox(
               height: 10,
             ),
