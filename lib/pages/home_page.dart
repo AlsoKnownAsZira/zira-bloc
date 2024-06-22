@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zira_bloc/bloc/counter.dart';
 
 class HomePage extends StatelessWidget {
-  final Counter myCounter = Counter(
-      initialData: 0); // initialize the counter using the Counter class
+  final Counter myCounter =
+      Counter(initialData: 0); // initialize the counter using the Counter class
   HomePage({super.key});
 
   @override
@@ -20,26 +20,47 @@ class HomePage extends StatelessWidget {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            BlocBuilder<Counter,int>(
-
-              bloc: myCounter,// which bloc to use
-              // a function to make conditional building, the values still change but the UI does not rebuild
-              buildWhen: (previous, current) {
+            BlocListener<Counter, int>(
+              bloc: myCounter,
+              listenWhen: (previous, current) {
                 if (current % 2 == 0) {
                   return true;
                 } else {
                   return false;
                 }
+              
               },
-              builder: (context, state) {
-                return Text(
-                  "$state", // display the data from the stream
-                  style: const TextStyle(
-                    fontSize: 50,
+              listener: (context, state) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  
+                  const SnackBar(
+                    content: Text("EVEN NUMBER!"),
+                    duration:  Duration(seconds: 1),
+                  
                   ),
                 );
               },
+              child: BlocBuilder<Counter, int>(
+                bloc: myCounter, // which bloc to use
+                // a function to make conditional building, the values still change but the UI does not rebuild
+                // buildWhen: (previous, current) {
+                //   if (current % 2 == 0) {
+                //     return true;
+                //   } else {
+                //     return false;
+                //   }
+                // },
+                builder: (context, state) {
+                  return Text(
+                    "$state", // display the data from the stream
+                    style: const TextStyle(
+                      fontSize: 50,
+                    ),
+                  );
+                },
+              ),
             ),
+
             // StreamBuilder(
             //   stream: myCounter.stream,
             //   initialData: myCounter.initialData,
