@@ -3,9 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zira_bloc/bloc/counter.dart';
 import 'package:zira_bloc/pages/data_widget.dart';
 class HomePage extends StatelessWidget {
- final  Counter myCounter =
-      Counter(initialData: 0); // initialize the counter using the Counter class
-  HomePage({super.key});
+  const HomePage({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +25,7 @@ class HomePage extends StatelessWidget {
                 color: Colors.red,
                 child: InkWell(
                   onTap: () {
-                    myCounter.decrementData();
+                    BlocProvider.of<Counter>(context).decrementData();
                   },
                   child: const SizedBox(
                     height: 100,
@@ -40,12 +39,13 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
               ),
-              DataWidget(myCounter: myCounter),
+              // data widget that shows the current state of the counter
+              DataWidget(),
               Material(
                 color: Colors.red,
                 child: InkWell(
                   onTap: () {
-                    myCounter.incrementData();
+                    BlocProvider.of<Counter>(context).incrementData();
                   },
                   child: const SizedBox(
                     height: 100,
