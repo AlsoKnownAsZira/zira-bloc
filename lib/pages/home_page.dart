@@ -20,47 +20,43 @@ class HomePage extends StatelessWidget {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            BlocListener<Counter, int>(
-              bloc: myCounter,
-              listenWhen: (previous, current) {
-                if (current % 2 == 0) {
-                  return true;
-                } else {
-                  return false;
-                }
-              
-              },
-              listener: (context, state) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  
-                  const SnackBar(
-                    content: Text("EVEN NUMBER!"),
-                    duration:  Duration(seconds: 1),
-                  
-                  ),
-                );
-              },
-              child: BlocBuilder<Counter, int>(
-                bloc: myCounter, // which bloc to use
-                // a function to make conditional building, the values still change but the UI does not rebuild
-                // buildWhen: (previous, current) {
-                //   if (current % 2 == 0) {
-                //     return true;
-                //   } else {
-                //     return false;
-                //   }
-                // },
-                builder: (context, state) {
-                  return Text(
-                    "$state", // display the data from the stream
-                    style: const TextStyle(
-                      fontSize: 50,
-                    ),
-                  );
-                },
-              ),
-            ),
-
+            // BlocListener<Counter, int>(
+            //   bloc: myCounter,
+            //   listenWhen: (previous, current) {
+            //     if (current % 2 == 0) {
+            //       return true;
+            //     } else {
+            //       return false;
+            //     }
+            //   },
+            //   listener: (context, state) {
+            //     ScaffoldMessenger.of(context).showSnackBar(
+            //       const SnackBar(
+            //         content: Text("EVEN NUMBER!"),
+            //         duration:  Duration(seconds: 1),
+            //       ),
+            //     );
+            //   },
+            //   child: BlocBuilder<Counter, int>(
+            //     bloc: myCounter, // which bloc to use
+            //     // a function to make conditional building, the values still change but the UI does not rebuild
+            //     // buildWhen: (previous, current) {
+            //     //   if (current % 2 == 0) {
+            //     //     return true;
+            //     //   } else {
+            //     //     return false;
+            //     //   }
+            //     // },
+            //     builder: (context, state) {
+            //       return Text(
+            //         "$state", // display the data from the stream
+            //         style: const TextStyle(
+            //           fontSize: 50,
+            //         ),
+            //       );
+            //     },
+            //   ),
+            // ),
             // StreamBuilder(
             //   stream: myCounter.stream,
             //   initialData: myCounter.initialData,
@@ -75,7 +71,32 @@ class HomePage extends StatelessWidget {
             //     );
             //   },
             // ),
-
+            BlocConsumer<Counter, int>(
+              bloc: myCounter,
+              builder: (context, state) {
+                return Text(
+                  "$state",
+                  style: const TextStyle(
+                    fontSize: 50,
+                  ),
+                );
+              },
+              listenWhen: (previous, current) {
+                if (current % 2 == 0) {
+                  return true;
+                } else {
+                  return false;
+                }
+              },
+              listener: (context, state) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("EVEN NUMBER!"),
+                    duration: Duration(seconds: 1),
+                  ),
+                );
+              },
+            ),
             const SizedBox(
               height: 10,
             ),
