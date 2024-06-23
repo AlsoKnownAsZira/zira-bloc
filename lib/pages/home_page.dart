@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zira_bloc/bloc/counter.dart';
-
+import 'package:zira_bloc/pages/data_widget.dart';
 class HomePage extends StatelessWidget {
-  final Counter myCounter =
+ final  Counter myCounter =
       Counter(initialData: 0); // initialize the counter using the Counter class
   HomePage({super.key});
 
@@ -17,120 +17,51 @@ class HomePage extends StatelessWidget {
           backgroundColor: const Color.fromARGB(255, 9, 71, 203),
           centerTitle: true,
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // BlocListener<Counter, int>(
-            //   bloc: myCounter,
-            //   listenWhen: (previous, current) {
-            //     if (current % 2 == 0) {
-            //       return true;
-            //     } else {
-            //       return false;
-            //     }
-            //   },
-            //   listener: (context, state) {
-            //     ScaffoldMessenger.of(context).showSnackBar(
-            //       const SnackBar(
-            //         content: Text("EVEN NUMBER!"),
-            //         duration:  Duration(seconds: 1),
-            //       ),
-            //     );
-            //   },
-            //   child: BlocBuilder<Counter, int>(
-            //     bloc: myCounter, // which bloc to use
-            //     // a function to make conditional building, the values still change but the UI does not rebuild
-            //     // buildWhen: (previous, current) {
-            //     //   if (current % 2 == 0) {
-            //     //     return true;
-            //     //   } else {
-            //     //     return false;
-            //     //   }
-            //     // },
-            //     builder: (context, state) {
-            //       return Text(
-            //         "$state", // display the data from the stream
-            //         style: const TextStyle(
-            //           fontSize: 50,
-            //         ),
-            //       );
-            //     },
-            //   ),
-            // ),
-            // StreamBuilder(
-            //   stream: myCounter.stream,
-            //   initialData: myCounter.initialData,
-            //   builder: (context, snapshot) {
-            //     return Center(
-            //       child: Text(
-            //         "${snapshot.data}", //display the data from the stream
-            //         style: const TextStyle(
-            //           fontSize: 50,
-            //         ),
-            //       ),
-            //     );
-            //   },
-            // ),
-            BlocConsumer<Counter, int>(
-              bloc: myCounter,
-              builder: (context, state) {
-                return Text(
-                  "$state",
-                  style: const TextStyle(
-                    fontSize: 50,
-                  ),
-                );
-              },
-              listenWhen: (previous, current) {
-                if (current % 2 == 0) {
-                  return true;
-                } else {
-                  return false;
-                }
-              },
-              listener: (context, state) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text("EVEN NUMBER!"),
-                    duration: Duration(seconds: 1),
-                  ),
-                );
-              },
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
+        body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Material(
+                color: Colors.red,
+                child: InkWell(
+                  onTap: () {
                     myCounter.decrementData();
                   },
-                  child: const Text(
-                    "-",
-                    style: TextStyle(
-                      fontSize: 30,
+                  child: const SizedBox(
+                    height: 100,
+                    width: 70,
+                    child: Center(
+                      child: Icon(
+                        Icons.remove,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
-                const SizedBox(
-                  width: 20,
-                ),
-                ElevatedButton(
-                  onPressed: () {
+              ),
+              DataWidget(myCounter: myCounter),
+              Material(
+                color: Colors.red,
+                child: InkWell(
+                  onTap: () {
                     myCounter.incrementData();
                   },
-                  child: const Text(
-                    "+",
-                    style: TextStyle(
-                      fontSize: 30,
+                  child: const SizedBox(
+                    height: 100,
+                    width: 70,
+                    child: Center(
+                      child: Icon(
+                        Icons.add,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
-              ],
-            ),
-          ],
-        ));
+              )
+            ],
+          )
+        ]));
   }
 }
+
