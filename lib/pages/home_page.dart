@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zira_bloc/bloc/counter.dart';
-import 'package:zira_bloc/pages/data_widget.dart';
+import 'package:zira_bloc/pages/second_page.dart';
+import 'package:zira_bloc/widgets/data_widget.dart';
+
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
-
   @override
   Widget build(BuildContext context) {
+    Counter mycounter = context.read<Counter>();
     return Scaffold(
         appBar: AppBar(
           title: const Text("Home Page"),
@@ -60,8 +62,15 @@ class HomePage extends StatelessWidget {
                 ),
               )
             ],
-          )
+          ),
+          const SizedBox(
+            height: 50,
+          ),
+          FloatingActionButton.extended(
+              onPressed: () {
+             Navigator.of(context).push(MaterialPageRoute(builder: (context) => BlocProvider.value(value:mycounter, child: const  SecondPage())));
+              },
+              label: const Text("Navigate to next page ->"))
         ]));
   }
 }
-

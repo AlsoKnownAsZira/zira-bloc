@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zira_bloc/bloc/counter.dart';
 
 class DataWidget extends StatelessWidget {
+  const DataWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
