@@ -14,25 +14,58 @@ class homePage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: myTheme.state ? Colors.blue : Colors.grey,
         centerTitle: true,
-      title: Text(
-    'Home Page',
-    style: TextStyle(color: myTheme.state ? const Color.fromARGB(255, 115, 115, 115) : Colors.white),
-  ),
+        title: Text(
+          'Home Page',
+          style: TextStyle(
+              color: myTheme.state
+                  ? const Color.fromARGB(255, 115, 115, 115)
+                  : Colors.white),
+        ),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            BlocBuilder<Counter, int>(
-              bloc: myCounter,
-              builder: (context, state) {
-                return Text(
-                  "$state",
-                  style: TextStyle(
-                    fontSize: 50,
-                  ),
-                );
-              },
+            MultiBlocListener(
+              listeners: [
+                BlocListener<ThemeBloc,bool>(
+                  listener: (context, state) {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(const SnackBar(content: Text("Dark theme"),duration: Duration(seconds: 1),));
+                  },
+                  listenWhen: (previous, current) {
+                    if (current == false) {
+                      return true;
+                    } else {
+                      return false;
+                    }
+                  },
+                ),
+                 BlocListener<Counter,int>(
+                  listener: (context, state) {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(const SnackBar(content: Text("Even number "),duration: Duration(seconds: 1),));
+                  },
+                  listenWhen: (previous, current) {
+                    if (current % 2 == 0) {
+                      return true;
+                    } else {
+                      return false;
+                    }
+                  },
+                ),
+              ],
+              child: BlocBuilder<Counter, int>(
+                bloc: myCounter,
+                builder: (context, state) {
+                  return Text(
+                    "$state",
+                    style: TextStyle(
+                      fontSize: 50,
+                    ),
+                  );
+                },
+              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
