@@ -1,26 +1,34 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'counterEvent.dart';
 
-class Counter extends Cubit<int> {
-  int initialData;
-  Counter({this.initialData = 0}): super(initialData); //initialdata is optional, we can use super(0) as well, but this approach is more readable
-
-  void incrementData() {
-    emit(state + 1); //no need to use yield
-  }
-
-  void decrementData() {
-    emit(state - 1);
-  }
-
-  @override 
-  void onChange(Change<int> change) {
-    super.onChange(change);
-    print(change);
-    
+class CounterBloc extends Bloc<CounterEvent, int> {
+  CounterBloc() : super(0) {
+    on<CounterEvent>((event, emit) {
+      switch (event) {
+        case CounterEvent.increment:
+          emit(state + 1);
+          break;
+        case CounterEvent.decrement:
+          emit(state - 1);
+          break;
+      }
+    });
   }
   @override
+  void onChange(Change) {
+    print(Change);
+  }
+
+  @override
   void onError(Object error, StackTrace stackTrace) {
-    super.onError(error, stackTrace);
     print(error);
+    print(stackTrace);
+  }
+
+  @override
+  void onTransition(Transition<CounterEvent, int> transition) {
+  
+   print(transition);
   }
 }
