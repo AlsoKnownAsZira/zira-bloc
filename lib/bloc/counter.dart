@@ -3,32 +3,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'counterEvent.dart';
 
 class CounterBloc extends Bloc<CounterEvent, int> {
-  CounterBloc() : super(0) {
-    on<CounterEvent>((event, emit) {
-      switch (event) {
-        case CounterEvent.increment:
-          emit(state + 1);
-          break;
-        case CounterEvent.decrement:
-          emit(state - 1);
-          break;
-      }
+  CounterBloc(int initial) : super(initial) {
+    on<DecrementEvent>((event, emit) {
+      emit((state - 1));
+    });
+    on<IncrementEvent>((event, emit) {
+      emit((state + 1));
+    });
+    on<IncrementByValueEvent>((event, emit) {
+      emit((state + event.value));
+    });
+    on<DecrementByValueEvent>((event, emit) {
+      emit((state - event.value));
     });
   }
-  @override
-  void onChange(Change) {
-    print(Change);
-  }
-
-  @override
-  void onError(Object error, StackTrace stackTrace) {
-    print(error);
-    print(stackTrace);
-  }
-
-  @override
-  void onTransition(Transition<CounterEvent, int> transition) {
-  
-   print(transition);
-  }
+//
 }
